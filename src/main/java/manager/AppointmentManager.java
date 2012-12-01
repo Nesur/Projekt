@@ -20,7 +20,7 @@ public class AppointmentManager implements
 
 	private Connect connect = new Connect();
 	private String createAppointmentTableString = "CREATE TABLE Appointment(id int NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-			+ "Instructor varchar(30),Student varchar(30),Date varchar(15),Time varchar(15))";
+			+ "Instructor varchar(30),Student varchar(30),Date varchar(15),Time varchar(25))";
 
 	private Statement createAppointmentTableStatement;
 	private PreparedStatement makeAppointmentStatement;
@@ -75,6 +75,7 @@ public class AppointmentManager implements
 					.getName());
 			makeAppointmentStatement.setString(2, appointment.getStudent()
 					.getName());
+
 			makeAppointmentStatement.setString(3, appointment.getDate());
 
 			makeAppointmentStatement.setString(4, appointment.getTime());
@@ -114,9 +115,10 @@ public class AppointmentManager implements
 		try {
 			ResultSet rs = getAllAppointmentsStatement.executeQuery();
 			while (rs.next()) {
-				result.add(new Appointment(new Student(rs.getString("Name")),
-						new Instructor(rs.getString("Name")), rs
-								.getString("Date"), rs.getString("Time")));
+				result.add(new Appointment(
+						new Instructor(rs.getString("Name")), new Student(rs
+								.getString("Name")), rs.getString("Date"), rs
+								.getString("Time")));
 				return result;
 			}
 		} catch (SQLException e) {
@@ -125,4 +127,5 @@ public class AppointmentManager implements
 		}
 		return null;
 	}
+
 }

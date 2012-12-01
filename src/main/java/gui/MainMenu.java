@@ -44,7 +44,7 @@ public class MainMenu extends Main implements ActionListener {
 		// manage items
 		appointments = new JMenuItem("Wyœwietl");
 		delete = new JMenuItem("Usuñ");
-		appointments.setToolTipText("Tylko po zalogownaiu!");
+		appointments.setToolTipText("Tylko po zalogowaniu!");
 		delete.setToolTipText("Tylko po zalogowaniu!");
 		manage.add(appointments);
 		manage.add(new JSeparator());

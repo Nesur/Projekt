@@ -8,7 +8,7 @@ public class Appointment {
 	private String date;
 	private String time;
 
-	public Appointment(Student student, Instructor instructor, String date,
+	public Appointment(Instructor instructor, Student student, String date,
 			String time) {
 		this.student = student;
 		this.instructor = instructor;
