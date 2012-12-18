@@ -59,7 +59,7 @@ public class Main extends JFrame {
 
 	// main
 	public static void main(String[] args) {
-		
+
 		new Main();
 		new MainMenu();
 
@@ -75,8 +75,8 @@ public class Main extends JFrame {
 			e1.printStackTrace();
 		}
 		// text fields
-		studentName = new JTextField();
-		instructorName = new JTextField();
+		studentName = new JTextField("");
+		instructorName = new JTextField("");
 		date = new JFormattedTextField(dateMask);
 		time = new JFormattedTextField(timeMask);
 
@@ -114,22 +114,31 @@ public class Main extends JFrame {
 		container.add(Box.createVerticalStrut(20));
 		container.add(makeAppointment);
 		makeAppointment.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AppointmentManager am = new AppointmentManager();
 
 				if (e.getSource() == makeAppointment) {
+					if (studentName.getText().trim() == ""
+							&& instructorName.getText().trim() == ""
+							&& date.getText().trim() == ""
+							&& time.getText().trim()	 == "") {
+						System.out.println("123123");
 
-					Appointment a = new Appointment(new Instructor(
-							instructorName.getText()), new Student(studentName
-							.getText()), date.getText(), time.getText());
-					am.makeAppointment(a);
-					JOptionPane.showMessageDialog(null, "Pomyœlnie dodano",
-							"Potwierdzenie", 1);
-					studentName.setText("");
-					instructorName.setText("");
-					date.setText("");
-					time.setText("");
+					} else {
+						Appointment a = new Appointment(new Instructor(
+								instructorName.getText()), new Student(
+								studentName.getText()), date.getText(), time
+								.getText());
+						am.makeAppointment(a);
+						JOptionPane.showMessageDialog(null, "Pomyœlnie dodano",
+								"Potwierdzenie", 1);
+						studentName.setText("");
+						instructorName.setText("");
+						date.setText("");
+						time.setText("");
+					}
 
 				}
 			}
