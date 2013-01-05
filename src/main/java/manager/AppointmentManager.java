@@ -116,8 +116,8 @@ public class AppointmentManager implements
 			ResultSet rs = getAllAppointmentsStatement.executeQuery();
 			while (rs.next()) {
 				result.add(new Appointment(
-						new Instructor(rs.getString("Name")), new Student(rs
-								.getString("Name")), rs.getString("Date"), rs
+						new Instructor(rs.getString("Instructor")), new Student(rs
+								.getString("Student")), rs.getString("Date"), rs
 								.getString("Time")));
 				return result;
 			}

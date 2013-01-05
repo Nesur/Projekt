@@ -1,161 +1,193 @@
 package gui;
 
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.Timer;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
-import manager.AppointmentManager;
 import data.Appointment;
 import data.Instructor;
 import data.Student;
+import login.Login;
+import manager.AppointmentManager;
+import javax.swing.JButton;
 
 public class Main extends JFrame {
-	// frame
-	private static final long serialVersionUID = 1L;
-	private static int width = 260;
-	private static int height = 365;
-	private static String title = "Umów siê na jazdê";
-	private Container container;
 
-	// text fields
-	private JTextField studentName;
-	private JTextField instructorName;
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private LoginWindow window = new LoginWindow();
+	private Login admin = new Login("admin", "1234");
+	private ShowAll all = new ShowAll();
+	private AppointmentManager am = new AppointmentManager();
+	private JTextField student;
+	private JTextField instructor;
 	private JFormattedTextField date;
 	private JFormattedTextField time;
-	// mask formater fields
-	private MaskFormatter dateMask;
-	private MaskFormatter timeMask;
-	// text field label
-	private JLabel setStudentName;
-	private JLabel setInstructorName;
-	private JLabel setDate;
-	private JLabel setTime;
-	// button make appointment
-	private JButton makeAppointment;
+	private JLabel confirmation;
 
-	public Main() {
-		initForm();
-		setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
-		setSize(width, height);
-		setTitle(title);
-		setResizable(false);
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-	}
-
-	// main
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Main frame = new Main();
+					frame.setVisible(true);
 
-		new Main();
-		new MainMenu();
-
-	}
-
-	public void initForm() {
-		container = getContentPane();
-		try {
-			dateMask = new MaskFormatter("##-##-####");
-			timeMask = new MaskFormatter("od ##.## do ##.##");
-		} catch (ParseException e1) {
-
-			e1.printStackTrace();
-		}
-		// text fields
-		studentName = new JTextField("");
-		instructorName = new JTextField("");
-		date = new JFormattedTextField(dateMask);
-		time = new JFormattedTextField(timeMask);
-
-		// text field labels
-		setStudentName = new JLabel("Podaj imie i nazwisko");
-		setStudentName.setFont(new Font("Georgia", 0, 15));
-		setInstructorName = new JLabel("Podaj imiê instruktora");
-		setInstructorName.setFont(new Font("Georgia", 0, 15));
-		setDate = new JLabel("Podaj date");
-		setDate.setFont(new Font("Georgia", 0, 15));
-		setTime = new JLabel("Podaj godzinê");
-		setTime.setFont(new Font("Georgia", 0, 15));
-
-		// button make
-		makeAppointment = new JButton("Dodaj");
-
-		setComponentsSize();
-		container.add(Box.createVerticalStrut(20));
-		container.add(setStudentName);
-		container.add(Box.createVerticalStrut(10));
-		container.add(studentName);
-		container.add(Box.createVerticalStrut(10));
-		container.add(setInstructorName);
-		container.add(Box.createVerticalStrut(10));
-		container.add(instructorName);
-		container.add(Box.createVerticalStrut(10));
-		container.add(setDate);
-		container.add(Box.createVerticalStrut(10));
-		container.add(date);
-		container.add(Box.createVerticalStrut(10));
-		container.add(setTime);
-		container.add(Box.createVerticalStrut(10));
-		container.add(time);
-		container.add(Box.createVerticalStrut(10));
-		container.add(Box.createVerticalStrut(20));
-		container.add(makeAppointment);
-		makeAppointment.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AppointmentManager am = new AppointmentManager();
-
-				if (e.getSource() == makeAppointment) {
-					if (studentName.getText().trim() == ""
-							&& instructorName.getText().trim() == ""
-							&& date.getText().trim() == ""
-							&& time.getText().trim()	 == "") {
-						System.out.println("123123");
-
-					} else {
-						Appointment a = new Appointment(new Instructor(
-								instructorName.getText()), new Student(
-								studentName.getText()), date.getText(), time
-								.getText());
-						am.makeAppointment(a);
-						JOptionPane.showMessageDialog(null, "Pomyœlnie dodano",
-								"Potwierdzenie", 1);
-						studentName.setText("");
-						instructorName.setText("");
-						date.setText("");
-						time.setText("");
-					}
-
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
 
 	}
 
-	public void setComponentsSize() {
-		studentName.setMaximumSize(new Dimension(width + 100, studentName
-				.getPreferredSize().height + 10));
-		instructorName.setMaximumSize(new Dimension(width + 100, instructorName
-				.getPreferredSize().height + 10));
-		date.setMaximumSize(new Dimension(150,
-				date.getPreferredSize().height + 10));
-		time.setMaximumSize(new Dimension(222,
-				time.getPreferredSize().height + 10));
+	/**
+	 * Create the frame.
+	 * 
+	 * @throws ParseException
+	 */
+	public Main() throws ParseException {
+		setResizable(false);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\wysoc_000\\Desktop\\wheel.png"));
+		setTitle("Um\u00F3w si\u0119 na jazde");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		setLocationRelativeTo(null);
+
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+
+		JMenu mnSystem = new JMenu("System");
+		menuBar.add(mnSystem);
+
+		JMenuItem mntmLogin = new JMenuItem("Login");
+		mntmLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				window.show();
+			}
+		});
+		mnSystem.add(mntmLogin);
+
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		mnSystem.add(mntmExit);
+
+		JMenu Manage = new JMenu("Manage");
+		menuBar.add(Manage);
+
+		JMenuItem mntmAll = new JMenuItem("Show all");
+		mntmAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+					all.show();
+				
+			}
+		});
+		mntmAll.setToolTipText("Logged in only");
+		Manage.add(mntmAll);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblStudentName = new JLabel("Imi\u0119 i nazwisko kursanta");
+		lblStudentName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblStudentName.setBounds(64, 50, 174, 18);
+		contentPane.add(lblStudentName);
+
+		student = new JTextField();
+		student.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		student.setBounds(242, 48, 140, 20);
+		contentPane.add(student);
+		student.setColumns(10);
+
+		JLabel lblInstructorName = new JLabel("Imi\u0119 i nazwisko instruktora");
+		lblInstructorName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblInstructorName.setBounds(64, 86, 174, 18);
+		contentPane.add(lblInstructorName);
+
+		instructor = new JTextField();
+		instructor.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		instructor.setBounds(242, 84, 140, 20);
+		contentPane.add(instructor);
+		instructor.setColumns(10);
+
+		JLabel lblData = new JLabel("Data");
+		lblData.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblData.setBounds(64, 124, 174, 18);
+		contentPane.add(lblData);
+
+		JLabel lblGodzina = new JLabel("Godzina");
+		lblGodzina.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblGodzina.setBounds(64, 162, 174, 18);
+		contentPane.add(lblGodzina);
+
+		MaskFormatter dateMask = new MaskFormatter("##-##-####");
+		date = new JFormattedTextField(dateMask);
+		date.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		date.setBounds(242, 122, 140, 20);
+		contentPane.add(date);
+
+		MaskFormatter timeMask = new MaskFormatter("##:##");
+		time = new JFormattedTextField(timeMask);
+		time.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		time.setBounds(242, 160, 140, 20);
+		contentPane.add(time);
+
+		JButton btnZatwierd = new JButton("Zatwierd\u017A");
+		btnZatwierd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (instructor.getText() != "" && student.getText() != "" && date.getText() != "" && time.getText() != "") {
+					addAppointment();
+				}
+
+			}
+		});
+		btnZatwierd.setBounds(64, 205, 101, 23);
+		contentPane.add(btnZatwierd);
+
+		confirmation = new JLabel("");
+		confirmation.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		confirmation.setBounds(64, 14, 174, 25);
+		contentPane.add(confirmation);
 
 	}
 
+	public void addAppointment() {
+	
+		
+		am.makeAppointment(new Appointment(new Instructor(instructor.getText()), new Student(student.getText()), date.getText(), time.getText()));
+		clearTextFields();
+		confirmation.setText("Dodano pomyœlnie!");
+		
+	}
+
+	public void clearTextFields() {
+		instructor.setText("");
+		student.setText("");
+		date.setText("");
+		time.setText("");
+
+	}
 }
