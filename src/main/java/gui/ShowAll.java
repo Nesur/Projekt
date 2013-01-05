@@ -1,38 +1,27 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.sql.PreparedStatement;
+import java.awt.Font;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
-
-import sql.connection.Connect;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import java.awt.Dimension;
-import javax.swing.JTextArea;
-
-import data.Appointment;
-
-import manager.AppointmentManager;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextField;
-import java.awt.Component;
-import javax.swing.JInternalFrame;
-import javax.swing.ScrollPaneConstants;
+import sql.connection.Connect;
 
 public class ShowAll extends JDialog {
 
@@ -41,10 +30,8 @@ public class ShowAll extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private Connect conn = new Connect();
-	private PreparedStatement getAll;
-	private ResultSet rs;
-	private AppointmentManager am = new AppointmentManager();
+
+	
 	private JTextField UsunIDtextField;
 	private JTextField UsunKursantTextField;
 	private Vector columnNames = new Vector();
@@ -94,7 +81,7 @@ public class ShowAll extends JDialog {
 		JButton UsunKursantbtnOk = new JButton("OK");
 		UsunKursantbtnOk.setBounds(267, 257, 58, 23);
 		contentPanel.add(UsunKursantbtnOk);
-		
+
 		tablePanel = new JPanel();
 		tablePanel.setBounds(10, 11, 534, 180);
 		contentPanel.add(tablePanel);
@@ -104,7 +91,7 @@ public class ShowAll extends JDialog {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		tablePanel.add(scrollPane);
-	
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -141,12 +128,12 @@ public class ShowAll extends JDialog {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		JTable table = new JTable(data,columnNames);
+		JTable table = new JTable(data, columnNames);
 		TableColumn col;
 		for (int i = 0; i < table.getColumnCount(); i++) {
 			col = table.getColumnModel().getColumn(i);
 			col.setMaxWidth(250);
 		}
-		
+
 	}
 }
