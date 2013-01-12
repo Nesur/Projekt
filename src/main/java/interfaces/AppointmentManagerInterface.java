@@ -9,6 +9,8 @@ public interface AppointmentManagerInterface<TEntity> {
 	public void deleteById(int id);
 
 	public void deleteByStudent(String student);
+	
+	public void deleteAll();
 
 	public List<Appointment> getAll();
 
