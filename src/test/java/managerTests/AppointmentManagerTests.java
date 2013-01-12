@@ -23,27 +23,39 @@ public class AppointmentManagerTests {
 	@Test
 	public void add_new_appointment_Test() {
 		am.deleteAll();
-		List<Appointment> apps = am.getAll();		
+		List<Appointment> apps = am.getAll();
 		Appointment a = new Appointment(new Instructor("Koles"), new Student("drugi koles"), "18 listopad", "20:00");
 		am.makeAppointment(a);
 		assertEquals(a, apps.get(0));
 
 	}
+
 	@Test
-	public void delete_by_id(){
-		List<Appointment> apps = am.getAll();		
-		
+	public void delete_by_id() {
+		List<Appointment> apps = am.getAll();
+
 		Appointment a = new Appointment(new Instructor("Koles"), new Student("drugi koles"), "18 listopad", "20:00");
 		am.makeAppointment(a);
 		am.deleteById((int) a.getId());
+
+	}
+
+	@Test
+	public void delete_by_student() {
+		List<Appointment> apps = am.getAll();
+
+		Appointment a = new Appointment(new Instructor("Koles"), new Student("drugi koles"), "18 listopad", "20:00");
+		am.makeAppointment(a);
+		am.deleteByStudent(a.getStudent().getName());
 		
 	}
+
 	@Test
 	public void delete_All_appointments() {
-		
+
 		am.deleteAll();
-		List<Appointment> apps = am.getAll();		
-		assertNull("Nie usunelo, bo sa elementy",apps);
+		List<Appointment> apps = am.getAll();
+		assertNull("Nie usunelo, bo sa elementy", apps);
 	}
 
 	@Test
