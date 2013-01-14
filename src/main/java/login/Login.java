@@ -4,12 +4,11 @@ public class Login {
 
 	private String username;
 	private String password;
-	private boolean isLogged;
 
-	public Login(String u, String p) {
-		this.username = u;
-		this.password = p;
-		isLogged = false;
+	public Login() {
+		username = "admin";
+		password = "1234";
+
 	}
 
 	public String getUsername() {
@@ -26,14 +25,6 @@ public class Login {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public boolean isLogged() {
-		return isLogged;
-	}
-
-	public void setLogged(boolean isLogged) {
-		this.isLogged = isLogged;
 	}
 
 }

@@ -6,8 +6,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Timer;
 
+import javax.faces.model.ListDataModel;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,7 +24,7 @@ import javax.swing.text.MaskFormatter;
 import data.Appointment;
 import data.Instructor;
 import data.Student;
-import login.Login;
+
 import manager.AppointmentManager;
 import javax.swing.JButton;
 
@@ -31,7 +33,7 @@ public class Main extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private LoginWindow window = new LoginWindow();
-	private Login admin = new Login("admin", "1234");
+
 	private ShowAll all = new ShowAll();
 	private AppointmentManager am = new AppointmentManager();
 	private JTextField student;
@@ -77,14 +79,6 @@ public class Main extends JFrame {
 		JMenu mnSystem = new JMenu("System");
 		menuBar.add(mnSystem);
 
-		JMenuItem mntmLogin = new JMenuItem("Login");
-		mntmLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				window.show();
-			}
-		});
-		mnSystem.add(mntmLogin);
-
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -99,7 +93,7 @@ public class Main extends JFrame {
 		JMenuItem mntmAll = new JMenuItem("Show all");
 		mntmAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ShowAll().show(true);
+				new LoginWindow().show(true);
 
 			}
 		});
@@ -160,10 +154,23 @@ public class Main extends JFrame {
 		JButton btnZatwierd = new JButton("Zatwierd\u017A");
 		btnZatwierd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (instructor.getText() != "" && student.getText() != "" && date.getText() != "" && time.getText() != "") {
-					addAppointment();
+				if (!instructor.getText().equalsIgnoreCase("") && !student.getText().equalsIgnoreCase("") && !date.getText().equalsIgnoreCase("") && !time.getText().equalsIgnoreCase("")) {
+					boolean alreadyIn = false;
+
+					for (Appointment a : am.getAll()) {
+						if (date.getText().equalsIgnoreCase(a.getDate()) && time.getText().equalsIgnoreCase(a.getTime())) {
+							alreadyIn = true;
+						} else
+							alreadyIn = false;
+					}
+					if (!alreadyIn) {
+						addAppointment();
+					}
 				}
 
+				else {
+					confirmation.setText("Podaj wszystkie dane!");
+				}
 			}
 		});
 		btnZatwierd.setBounds(10, 194, 101, 23);

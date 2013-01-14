@@ -8,13 +8,20 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import java.awt.Font;
+import java.awt.*;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import sql.connection.Connect;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
-
+import login.Login;
 
 public class LoginWindow extends JDialog {
 
@@ -23,16 +30,14 @@ public class LoginWindow extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JPasswordField passwordField;
 	private JTextField userNametextField;
-	
+	private Connect con = new Connect();
+	private Login admin = new Login();
+	private JPasswordField passwordField;
 
-	/**
-	 * Create the dialog.
-	 */
 	public LoginWindow() {
 		setResizable(false);
-		
+
 		setTitle("Zaloguj si\u0119");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(false);
@@ -55,14 +60,14 @@ public class LoginWindow extends JDialog {
 			contentPanel.add(lblHas³o);
 		}
 
-		passwordField = new JPasswordField();
-		passwordField.setBounds(48, 105, 119, 20);
-		contentPanel.add(passwordField);
-
 		userNametextField = new JTextField();
 		userNametextField.setBounds(48, 49, 119, 20);
 		contentPanel.add(userNametextField);
 		userNametextField.setColumns(10);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(48, 125, 119, 20);
+		contentPanel.add(passwordField);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -71,9 +76,14 @@ public class LoginWindow extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(userNametextField.getText()=="admin" && passwordField.getText()=="1234"){
-							dispose();
+						dispose();
+
+						if (userNametextField.getText().equalsIgnoreCase(admin.getUsername()) && passwordField.getText().equalsIgnoreCase(admin.getPassword())) {
+
+							new ShowAll().show();
+
 						}
+
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -91,5 +101,9 @@ public class LoginWindow extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+
+	public void getAllUsers() {
+
 	}
 }

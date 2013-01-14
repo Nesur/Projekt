@@ -74,12 +74,12 @@ public class ShowAll extends JDialog {
 		contentPanel.add(lblUsunKursant);
 
 		UsunIDtextField = new JTextField();
-		UsunIDtextField.setBounds(161, 204, 96, 23);
+		UsunIDtextField.setBounds(161, 204, 100, 23);
 		contentPanel.add(UsunIDtextField);
 		UsunIDtextField.setColumns(10);
 
 		UsunKursantTextField = new JTextField();
-		UsunKursantTextField.setBounds(161, 257, 96, 23);
+		UsunKursantTextField.setBounds(161, 257, 100, 23);
 		contentPanel.add(UsunKursantTextField);
 		UsunKursantTextField.setColumns(10);
 
@@ -87,9 +87,11 @@ public class ShowAll extends JDialog {
 		UsunIDbtnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				deleteById();
+				dispose();
+			
 			}
 		});
-		UsunIDbtnOk.setBounds(267, 204, 81, 23);
+		UsunIDbtnOk.setBounds(271, 204, 81, 23);
 		contentPanel.add(UsunIDbtnOk);
 
 		JButton UsunKursantbtnOk = new JButton("Usuñ");
@@ -98,7 +100,7 @@ public class ShowAll extends JDialog {
 				deleteByStudent();
 			}
 		});
-		UsunKursantbtnOk.setBounds(267, 257, 81, 23);
+		UsunKursantbtnOk.setBounds(271, 257, 81, 23);
 		contentPanel.add(UsunKursantbtnOk);
 
 		tablePanel = new JPanel();
