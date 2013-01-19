@@ -40,16 +40,7 @@ public class AppointmentManagerTests {
 
 	}
 
-	@Test
-	public void delete_by_student() {
-		List<Appointment> apps = am.getAll();
-
-		Appointment a = new Appointment(new Instructor("Koles"), new Student("drugi koles"), "18 listopad", "20:00");
-		am.makeAppointment(a);
-		am.deleteByStudent(a.getStudent().getName());
-		
-	}
-
+	
 	@Test
 	public void delete_All_appointments() {
 

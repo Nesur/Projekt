@@ -38,7 +38,6 @@ public class ShowAll extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 
 	private JTextField UsunIDtextField;
-	private JTextField UsunKursantTextField;
 	private Vector columnNames = new Vector();
 
 	private Vector data = new Vector();
@@ -68,40 +67,21 @@ public class ShowAll extends JDialog {
 		lblUsun.setBounds(20, 202, 118, 23);
 		contentPanel.add(lblUsun);
 
-		JLabel lblUsunKursant = new JLabel("Usu\u0144 przez kursanta");
-		lblUsunKursant.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblUsunKursant.setBounds(20, 255, 131, 23);
-		contentPanel.add(lblUsunKursant);
-
 		UsunIDtextField = new JTextField();
 		UsunIDtextField.setBounds(161, 204, 100, 23);
 		contentPanel.add(UsunIDtextField);
 		UsunIDtextField.setColumns(10);
-
-		UsunKursantTextField = new JTextField();
-		UsunKursantTextField.setBounds(161, 257, 100, 23);
-		contentPanel.add(UsunKursantTextField);
-		UsunKursantTextField.setColumns(10);
 
 		JButton UsunIDbtnOk = new JButton("Usuñ");
 		UsunIDbtnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				deleteById();
 				dispose();
-			
+
 			}
 		});
 		UsunIDbtnOk.setBounds(271, 204, 81, 23);
 		contentPanel.add(UsunIDbtnOk);
-
-		JButton UsunKursantbtnOk = new JButton("Usuñ");
-		UsunKursantbtnOk.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				deleteByStudent();
-			}
-		});
-		UsunKursantbtnOk.setBounds(271, 257, 81, 23);
-		contentPanel.add(UsunKursantbtnOk);
 
 		tablePanel = new JPanel();
 		tablePanel.setBounds(10, 11, 534, 180);
@@ -112,6 +92,16 @@ public class ShowAll extends JDialog {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 		tablePanel.add(scrollPane);
+
+		JButton btnDeleteAll = new JButton("Usu\u0144 wszystko");
+		btnDeleteAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				deleteAll();
+				dispose();
+			}
+		});
+		btnDeleteAll.setBounds(404, 204, 131, 23);
+		contentPanel.add(btnDeleteAll);
 
 		{
 			JPanel buttonPane = new JPanel();
@@ -169,11 +159,7 @@ public class ShowAll extends JDialog {
 
 	}
 
-	public void deleteByStudent() {
-		am.deleteByStudent(UsunKursantTextField.getText());
-	}
-
-	public void refresh() {
-
+	public void deleteAll() {
+		am.deleteAll();
 	}
 }

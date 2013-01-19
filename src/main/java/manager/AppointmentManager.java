@@ -86,30 +86,19 @@ public class AppointmentManager implements AppointmentManagerInterface<Appointme
 	}
 
 	@Override
-	public void deleteByStudent(String student) {
-		try {
-			deleteByStudentStatement.setString(1, student);
-			deleteByStudentStatement.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Override
 	public List<Appointment> getAll() {
 		List<Appointment> result = new ArrayList<Appointment>();
 		try {
 			ResultSet rs = getAllAppointmentsStatement.executeQuery();
 			while (rs.next()) {
 				result.add(new Appointment(new Instructor(rs.getString("Instructor")), new Student(rs.getString("Student")), rs.getString("Date"), rs.getString("Time")));
-				return result;
+
 			}
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return null;
+		return result;
 	}
 
 	@Override
@@ -117,7 +106,7 @@ public class AppointmentManager implements AppointmentManagerInterface<Appointme
 		try {
 			deleteAllAppointmentsStatement.executeUpdate();
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}
 

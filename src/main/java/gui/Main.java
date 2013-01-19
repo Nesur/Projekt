@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
@@ -27,6 +28,10 @@ import data.Student;
 
 import manager.AppointmentManager;
 import javax.swing.JButton;
+import javax.swing.JSeparator;
+import javax.swing.JList;
+import javax.swing.JSpinner;
+import javax.swing.JComboBox;
 
 public class Main extends JFrame {
 
@@ -37,11 +42,14 @@ public class Main extends JFrame {
 	private ShowAll all = new ShowAll();
 	private AppointmentManager am = new AppointmentManager();
 	private JTextField student;
-	private JTextField instructor;
 	private JFormattedTextField date;
-	private JFormattedTextField time;
 	private JLabel confirmation;
-
+	private String[] instructors = new String[5];
+	private JComboBox instructor;
+	private String[] hours = new String[10];
+	private JComboBox time;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -72,6 +80,18 @@ public class Main extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 346, 282);
 		setLocationRelativeTo(null);
+		instructors[0] = "";
+		instructors[1] = "Jan Kowalski";
+		instructors[2] = "Tomek Mróz";
+		instructors[3] = "Arek Pieczarek";
+
+		hours[0] = "";
+		hours[1] = "8:00 - 10:00";
+		hours[2] = "10:00 - 12:00";
+		hours[3] = "12:00 - 14:00";
+		hours[4] = "14:00 - 16:00";
+		hours[5] = "16:00 - 18:00";
+		hours[6] = "18:00 - 20:00";
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -94,20 +114,18 @@ public class Main extends JFrame {
 		mntmAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new LoginWindow().show(true);
+				confirmation.setText("");
 
 			}
 		});
-		mntmAll.setToolTipText("Logged in only");
+		mntmAll.setToolTipText("Tylko dla zalogowanych!");
 		Manage.add(mntmAll);
-
-		JMenu mnInfo = new JMenu("Info");
-		menuBar.add(mnInfo);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblStudentName = new JLabel("Imi\u0119 i nazwisko kursanta");
+		JLabel lblStudentName = new JLabel("Podaj imi\u0119 i nazwisko");
 		lblStudentName.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblStudentName.setBounds(10, 39, 174, 18);
 		contentPane.add(lblStudentName);
@@ -118,16 +136,10 @@ public class Main extends JFrame {
 		contentPane.add(student);
 		student.setColumns(10);
 
-		JLabel lblInstructorName = new JLabel("Imi\u0119 i nazwisko instruktora");
+		JLabel lblInstructorName = new JLabel("Wybierz instruktora");
 		lblInstructorName.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblInstructorName.setBounds(10, 75, 174, 18);
 		contentPane.add(lblInstructorName);
-
-		instructor = new JTextField();
-		instructor.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		instructor.setBounds(188, 73, 140, 20);
-		contentPane.add(instructor);
-		instructor.setColumns(10);
 
 		JLabel lblData = new JLabel("Data");
 		lblData.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -145,21 +157,18 @@ public class Main extends JFrame {
 		date.setBounds(188, 111, 140, 20);
 		contentPane.add(date);
 
-		MaskFormatter timeMask = new MaskFormatter("##:##");
-		time = new JFormattedTextField(timeMask);
-		time.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		time.setBounds(188, 149, 140, 20);
-		contentPane.add(time);
+	
 
 		JButton btnZatwierd = new JButton("Zatwierd\u017A");
 		btnZatwierd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!instructor.getText().equalsIgnoreCase("") && !student.getText().equalsIgnoreCase("") && !date.getText().equalsIgnoreCase("") && !time.getText().equalsIgnoreCase("")) {
+				if (!((String) instructor.getSelectedItem()).equalsIgnoreCase("") && !student.getText().equalsIgnoreCase("") && !date.getText().equalsIgnoreCase("") && !((String) time.getSelectedItem()).equalsIgnoreCase("")) {
 					boolean alreadyIn = false;
-
 					for (Appointment a : am.getAll()) {
-						if (date.getText().equalsIgnoreCase(a.getDate()) && time.getText().equalsIgnoreCase(a.getTime())) {
+
+						if (((String) instructor.getSelectedItem()).equalsIgnoreCase(a.getInstructor().getName()) && date.getText().equalsIgnoreCase(a.getDate()) && ((String) time.getSelectedItem()).equalsIgnoreCase(a.getTime())) {
 							alreadyIn = true;
+							confirmation.setText("Niestety takie dane ju¿ istniej¹!");
 						} else
 							alreadyIn = false;
 					}
@@ -178,24 +187,47 @@ public class Main extends JFrame {
 
 		confirmation = new JLabel("");
 		confirmation.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		confirmation.setBounds(10, 11, 174, 25);
+		confirmation.setBounds(10, 11, 318, 25);
 		contentPane.add(confirmation);
+
+		instructor = new JComboBox<Object>();
+		instructor.setBounds(188, 76, 140, 20);
+		instructor.addItem(instructors[0]);
+		instructor.addItem(instructors[1]);
+		instructor.addItem(instructors[2]);
+		instructor.addItem(instructors[3]);
+		contentPane.add(instructor);
+		
+		time = new JComboBox<Object>();
+		time.setBounds(188, 152, 140, 20);
+		time.addItem(hours[0]);
+		time.addItem(hours[1]);
+		time.addItem(hours[2]);
+		time.addItem(hours[3]);
+		time.addItem(hours[4]);
+		time.addItem(hours[5]);
+		time.addItem(hours[6]);
+	
+		
+		
+		contentPane.add(time);
 
 	}
 
 	public void addAppointment() {
 
-		am.makeAppointment(new Appointment(new Instructor(instructor.getText()), new Student(student.getText()), date.getText(), time.getText()));
+		am.makeAppointment(new Appointment(new Instructor((String) instructor.getSelectedItem()), new Student(student.getText()), date.getText(), (String) time.getSelectedItem()));
 		clearTextFields();
 		confirmation.setText("Dodano pomyœlnie!");
 
 	}
 
 	public void clearTextFields() {
-		instructor.setText("");
+		instructor.setSelectedIndex(0);
+		time.setSelectedIndex(0);
 		student.setText("");
 		date.setText("");
-		time.setText("");
+		
 
 	}
 }
