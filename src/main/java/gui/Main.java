@@ -20,6 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.MaskFormatter;
 
 import data.Appointment;
@@ -33,6 +34,9 @@ import javax.swing.JList;
 import javax.swing.JSpinner;
 import javax.swing.JComboBox;
 
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+
 public class Main extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -42,14 +46,14 @@ public class Main extends JFrame {
 	private ShowAll all = new ShowAll();
 	private AppointmentManager am = new AppointmentManager();
 	private JTextField student;
-	private JFormattedTextField date;
+
 	private JLabel confirmation;
 	private String[] instructors = new String[5];
 	private JComboBox instructor;
 	private String[] hours = new String[10];
 	private JComboBox time;
-	
-	
+	private JDateChooser date;
+
 	/**
 	 * Launch the application.
 	 */
@@ -151,22 +155,19 @@ public class Main extends JFrame {
 		lblGodzina.setBounds(10, 151, 174, 18);
 		contentPane.add(lblGodzina);
 
-		MaskFormatter dateMask = new MaskFormatter("##-##-####");
-		date = new JFormattedTextField(dateMask);
-		date.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		date = new JDateChooser();
 		date.setBounds(188, 111, 140, 20);
-		contentPane.add(date);
 
-	
+		contentPane.add(date);
 
 		JButton btnZatwierd = new JButton("Zatwierd\u017A");
 		btnZatwierd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!((String) instructor.getSelectedItem()).equalsIgnoreCase("") && !student.getText().equalsIgnoreCase("") && !date.getText().equalsIgnoreCase("") && !((String) time.getSelectedItem()).equalsIgnoreCase("")) {
+				if (!((String) instructor.getSelectedItem()).equalsIgnoreCase("") && !student.getText().equalsIgnoreCase("") && !((JTextField) date.getDateEditor().getUiComponent()).getText().equalsIgnoreCase("") && !((String) time.getSelectedItem()).equalsIgnoreCase("")) {
 					boolean alreadyIn = false;
 					for (Appointment a : am.getAll()) {
 
-						if (((String) instructor.getSelectedItem()).equalsIgnoreCase(a.getInstructor().getName()) && date.getText().equalsIgnoreCase(a.getDate()) && ((String) time.getSelectedItem()).equalsIgnoreCase(a.getTime())) {
+						if (((String) instructor.getSelectedItem()).equalsIgnoreCase(a.getInstructor().getName()) && ((JTextField) date.getDateEditor().getUiComponent()).getText().equalsIgnoreCase(a.getDate()) && ((String) time.getSelectedItem()).equalsIgnoreCase(a.getTime())) {
 							alreadyIn = true;
 							confirmation.setText("Niestety takie dane ju¿ istniej¹!");
 						} else
@@ -197,7 +198,7 @@ public class Main extends JFrame {
 		instructor.addItem(instructors[2]);
 		instructor.addItem(instructors[3]);
 		contentPane.add(instructor);
-		
+
 		time = new JComboBox<Object>();
 		time.setBounds(188, 152, 140, 20);
 		time.addItem(hours[0]);
@@ -207,16 +208,14 @@ public class Main extends JFrame {
 		time.addItem(hours[4]);
 		time.addItem(hours[5]);
 		time.addItem(hours[6]);
-	
-		
-		
+
 		contentPane.add(time);
 
 	}
 
 	public void addAppointment() {
 
-		am.makeAppointment(new Appointment(new Instructor((String) instructor.getSelectedItem()), new Student(student.getText()), date.getText(), (String) time.getSelectedItem()));
+		am.makeAppointment(new Appointment(new Instructor((String) instructor.getSelectedItem()), new Student(student.getText()), ((JTextField) date.getDateEditor().getUiComponent()).getText(), (String) time.getSelectedItem()));
 		clearTextFields();
 		confirmation.setText("Dodano pomyœlnie!");
 
@@ -226,8 +225,7 @@ public class Main extends JFrame {
 		instructor.setSelectedIndex(0);
 		time.setSelectedIndex(0);
 		student.setText("");
-		date.setText("");
-		
+		((JTextField) date.getDateEditor().getUiComponent()).setText("");
 
 	}
 }

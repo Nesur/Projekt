@@ -32,5 +32,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/wysoc_000/Desktop/java libs/jcalendar/jcalendar-1.3.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/wysoc_000/Desktop/java libs/jcalendar/looks-2.0.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
