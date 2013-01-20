@@ -32,21 +32,21 @@ public class AppointmentManagerTests {
 
 	@Test
 	public void delete_by_id() {
+		am.deleteAll();
 		List<Appointment> apps = am.getAll();
 
 		Appointment a = new Appointment(new Instructor("Koles"), new Student("drugi koles"), "18 listopad", "20:00");
 		am.makeAppointment(a);
 		am.deleteById((int) a.getId());
-
+		assertTrue("nie usunelo", am.getAll().contains(a));
 	}
 
-	
 	@Test
 	public void delete_All_appointments() {
 
 		am.deleteAll();
 		List<Appointment> apps = am.getAll();
-		assertNull("Nie usunelo, bo sa elementy", apps);
+		assertNull("Nie usunelo, bo nie ma elementow lub bylo puste", apps);
 	}
 
 	@Test
